@@ -1,0 +1,26 @@
+{
+  "title": "Breeze TTS 2",
+  "description": "BreezeBlue Breeze TTS 2 — open-weight bilingual (EN/ZH) text-to-speech with voice clone, voice design, voice direction, and inline vocal events. Requires an NVIDIA GPU with 12GB+ VRAM.",
+  "icon": "icon.png",
+  "gpu": ["nvidia"],
+  "platform": ["win32", "linux"],
+  "links": [{
+    "title": "Breeze TTS 2",
+    "links": [{
+      "title": "Model (Hugging Face)",
+      "value": "https://huggingface.co/BreezeBlue/Breeze-TTS-2"
+    }, {
+      "title": "Inference code (GitHub)",
+      "value": "https://github.com/breezeblue-ai/breeze-tts"
+    }, {
+      "title": "Website",
+      "value": "https://breezeblue.ai/"
+    }, {
+      "title": "Blog post",
+      "value": "https://breezeblue.ai/breeze-tts-2"
+    }, {
+      "title": "Discord",
+      "value": "https://discord.com/invite/6H7AgPe9pA"
+    }]
+  }]
+}

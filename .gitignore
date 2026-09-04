@@ -1,0 +1,15 @@
+# Cloned upstream code, virtual environment, and downloaded model weights
+app/
+
+# Pinokio execution logs
+logs/
+
+# Tooling
+.open-edit/
+__pycache__/
+*.pyc
+
+# Agent tooling (installed by session preflight hooks, not part of the launcher)
+.claude/
+.codex/
+.gemini/
