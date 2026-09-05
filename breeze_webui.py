@@ -16,6 +16,7 @@ from pathlib import Path
 
 import gradio as gr
 import numpy as np
+from transformers import AutoTokenizer, GemmaTokenizerFast
 
 from breeze_infer.runtime import (
     load_runtime,
@@ -24,8 +25,15 @@ from breeze_infer.runtime import (
     update_generation_config_for_breeze,
 )
 from breeze_infer.templates import get_template, prepare_inputs
+from models.breeze_config import BreezeConfig
 from models.fast_streaming import FastBreezeStreamingRuntime, FastStreamingConfig
 from models.warmup_profile import load_warmup_profile
+
+# Register the tokenizer for the custom config so AutoTokenizer does not have
+# to rely solely on the checkpoint metadata to resolve it.
+AutoTokenizer.register(
+    BreezeConfig, fast_tokenizer_class=GemmaTokenizerFast, exist_ok=True
+)
 
 REPO_ROOT = Path(__file__).resolve().parent
 FAST_CONFIG = REPO_ROOT / "configs" / "fast.json"
