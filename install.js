@@ -53,6 +53,21 @@ module.exports = {
         "local-dir": "breeze-tts-2"
       }
     },
+    // Pinokio/Hugging Face downloads have occasionally omitted the tokenizer
+    // metadata, so fetch these required runtime files explicitly.
+    {
+      method: "hf.download",
+      params: {
+        path: "app",
+        "_": [
+          "BreezeBlue/Breeze-TTS-2",
+          "tokenizer.json",
+          "tokenizer_config.json",
+          "special_tokens_map.json"
+        ],
+        "local-dir": "breeze-tts-2"
+      }
+    },
     {
       method: "notify",
       params: {
