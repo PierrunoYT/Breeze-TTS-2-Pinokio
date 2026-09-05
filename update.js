@@ -23,18 +23,12 @@ module.exports = {
         dest: "app/breeze_webui.py"
       }
     },
-    // Repair existing installs where the model download omitted tokenizer
-    // files required by AutoTokenizer.
+    // Repair incomplete checkpoints and pick up model file updates.
     {
       method: "hf.download",
       params: {
         path: "app",
-        "_": [
-          "BreezeBlue/Breeze-TTS-2",
-          "tokenizer.json",
-          "tokenizer_config.json",
-          "special_tokens_map.json"
-        ],
+        "_": [ "BreezeBlue/Breeze-TTS-2" ],
         "local-dir": "breeze-tts-2"
       }
     },
