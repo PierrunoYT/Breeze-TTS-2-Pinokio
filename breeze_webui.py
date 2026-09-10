@@ -124,6 +124,10 @@ def generate(text, instruction, ref_audio, ref_text, cfg_scale, seed, randomize_
 
     if randomize_seed:
         seed = random.randint(0, 2**31 - 1)
+    # gr.Number yields None when the box is cleared, and int(None) would
+    # surface as a bare TypeError instead of a readable message.
+    if seed is None:
+        raise gr.Error("Enter a seed, or tick Randomize.")
     seed = int(seed)
 
     with _runtime_lock:

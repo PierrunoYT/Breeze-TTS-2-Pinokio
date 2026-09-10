@@ -186,6 +186,8 @@ It returns streaming mono 24 kHz signed 16-bit little-endian PCM. Add
 | `link.js` | Deduplicate venv libraries to save disk space |
 | `torch.js` | Platform-specific torch/torchaudio install |
 | `pinokio.js` | Dynamic launcher menu |
+| `pinokio.json` | Launcher metadata (title, description, icon, GPU/platform) |
+| `icon.png` | Launcher icon |
 | `breeze_webui.py` | The Gradio UI, copied into `app/` at install time |
 
 ## License
