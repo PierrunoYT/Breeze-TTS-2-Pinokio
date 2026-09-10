@@ -38,10 +38,10 @@ In Pinokio, click **Install**. That runs `install.js`, which:
 
 Then click **Start** and open the web UI.
 
-**Install** disappears from the menu once `app/env` exists, because step 1 clones
-into `app/` and a second clone over a populated directory fails. To reinstall,
-click **Reset** first (this deletes the weights too), then **Install**. For
-routine upgrades use **Update**, which keeps the weights in place.
+Clicking **Install** again is safe: the clone is skipped when `app/` already
+exists, so a re-run repairs a partial install (missing deps, an interrupted
+weight download) without re-cloning. For routine upgrades use **Update**; to
+start completely over use **Reset**, which deletes the weights too.
 
 ## Usage
 
@@ -59,6 +59,10 @@ Match the instruction language to the target text. Reference audio should be
 clean speech with minimal background noise.
 
 ### Environment variables
+
+Set these in Pinokio's **Configure** tab (they are stored in the launcher's
+`ENVIRONMENT` file and imported automatically on every script run), then
+restart via **Start**.
 
 | Variable | Default | Purpose |
 | --- | --- | --- |

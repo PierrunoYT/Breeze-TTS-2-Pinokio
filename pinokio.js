@@ -73,6 +73,10 @@ module.exports = {
           text: "Update",
           href: "update.js",
         }, {
+          icon: "fa-solid fa-plug",
+          text: "Install",
+          href: "install.js",
+        }, {
           icon: "fa-solid fa-file-zipper",
           text: "<div><strong>Save Disk Space</strong><div>Deduplicates redundant library files</div></div>",
           href: "link.js",

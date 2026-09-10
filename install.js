@@ -1,7 +1,10 @@
 module.exports = {
   run: [
-    // Clone the official Breeze TTS 2 inference code (Apache 2.0)
+    // Clone the official Breeze TTS 2 inference code (Apache 2.0).
+    // Skipped when 'app' already exists, so re-running Install repairs a
+    // partial install instead of failing on a clone into a populated dir.
     {
+      when: "{{!exists('app')}}",
       method: "shell.run",
       params: {
         message: [

@@ -73,12 +73,15 @@ def _get_runtime():
     config = FastStreamingConfig(
         max_new_tokens=MAX_NEW_TOKENS,
         max_seq_len=MAX_SEQ_LEN,
+        # Set the per-stage flags to match fast_all rather than pinning them to
+        # False, so the result does not depend on which of the two wins when
+        # they disagree.
         fast_all=True if FAST_ALL else None,
-        fast_text_encoder=False,
-        fast_backbone_prefill=False,
-        fast_backbone_decode=False,
-        fast_depth_decoder=False,
-        fast_codec=False,
+        fast_text_encoder=FAST_ALL,
+        fast_backbone_prefill=FAST_ALL,
+        fast_backbone_decode=FAST_ALL,
+        fast_depth_decoder=FAST_ALL,
+        fast_codec=FAST_ALL,
         repetition_penalty=REPETITION_PENALTY,
     )
     runtime = FastBreezeStreamingRuntime(
