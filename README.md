@@ -38,6 +38,11 @@ In Pinokio, click **Install**. That runs `install.js`, which:
 
 Then click **Start** and open the web UI.
 
+**Install** disappears from the menu once `app/env` exists, because step 1 clones
+into `app/` and a second clone over a populated directory fails. To reinstall,
+click **Reset** first (this deletes the weights too), then **Install**. For
+routine upgrades use **Update**, which keeps the weights in place.
+
 ## Usage
 
 1. Type the text to synthesize. Add inline vocal events if you want them.
