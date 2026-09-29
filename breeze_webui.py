@@ -128,6 +128,9 @@ def generate(text, instruction, ref_audio, ref_text, cfg_scale, seed, randomize_
     if seed is None:
         raise gr.Error("Enter a seed, or tick Randomize.")
     seed = int(seed)
+    # set_all_seeds feeds np.random.seed, which rejects anything outside this.
+    if not 0 <= seed < 2**32:
+        raise gr.Error("Seed must be between 0 and 4294967295.")
 
     with _runtime_lock:
         state = _get_runtime()
