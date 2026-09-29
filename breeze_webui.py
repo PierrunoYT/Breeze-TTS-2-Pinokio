@@ -24,7 +24,7 @@ from breeze_infer.runtime import (
     set_all_seeds,
     update_generation_config_for_breeze,
 )
-from breeze_infer.templates import get_template, prepare_inputs
+from breeze_infer.templates import get_template, prepare_inputs, select_template_name
 from models.breeze_config import BreezeConfig
 from models.fast_streaming import FastBreezeStreamingRuntime, FastStreamingConfig
 from models.warmup_profile import load_warmup_profile
@@ -43,7 +43,6 @@ MODEL_DIR = Path(os.environ.get("BREEZE_TTS_MODEL", REPO_ROOT / "breeze-tts-2"))
 MAX_NEW_TOKENS = 1500
 MAX_SEQ_LEN = 2048
 REPETITION_PENALTY = 1.1
-DEFAULT_INSTRUCTION = "Speak clearly and naturally."
 
 FAST_ALL = os.environ.get("BREEZE_TTS_FAST", "").lower() in {"1", "true", "yes"}
 
@@ -108,7 +107,7 @@ def generate(text, instruction, ref_audio, ref_text, cfg_scale, seed, randomize_
     if not text:
         raise gr.Error("Enter some text to synthesize.")
 
-    instruction = (instruction or "").strip() or DEFAULT_INSTRUCTION
+    instruction = (instruction or "").strip()
     ref_text = (ref_text or "").strip()
 
     has_ref_audio = bool(ref_audio)
@@ -138,14 +137,17 @@ def generate(text, instruction, ref_audio, ref_text, cfg_scale, seed, randomize_
         request = {
             "id": request_id,
             "text": text,
-            "instruction": instruction,
             "speaker": "S0",
         }
-        template_name = "tts_instruction"
+        # Like infer.py, only send an instruction when one was given: an empty
+        # box selects the plain / voice-clone templates, a filled one selects
+        # voice design / voice direction.
+        if instruction:
+            request["instruction"] = instruction
         if has_ref_audio:
             request["ref_audio_path"] = str(ref_audio)
             request["ref_text"] = ref_text
-            template_name = "ref_edit_tata"
+        template_name = select_template_name(request)
 
         set_all_seeds(seed)
         inputs = prepare_inputs(
@@ -180,7 +182,8 @@ with gr.Blocks(title="Breeze TTS 2") as demo:
         "# Breeze TTS 2\n"
         "Bilingual (English / Chinese) text-to-speech from "
         "[BreezeBlue](https://breezeblue.ai/breeze-tts-2).\n\n"
-        "- **Voice Clone** - upload reference audio and its exact transcript.\n"
+        "- **Voice Clone** - upload reference audio and its exact transcript, "
+        "and leave the instruction empty.\n"
         "- **Voice Design** - leave the reference empty and describe the voice "
         "in the instruction. Use CFG 4.\n"
         "- **Voice Direction** - reference audio *and* an instruction, to keep "
@@ -200,9 +203,11 @@ with gr.Blocks(title="Breeze TTS 2") as demo:
             instruction = gr.Textbox(
                 label="Instruction (voice design / voice direction)",
                 lines=2,
-                placeholder=DEFAULT_INSTRUCTION,
+                placeholder="A warm, thoughtful young woman with a clear voice "
+                "and a calm delivery.",
                 info="Describe the voice or the delivery. Match the instruction "
-                "language to the target text. Leave empty for a plain read.",
+                "language to the target text. Leave empty for Voice Clone or a "
+                "plain read.",
             )
             with gr.Accordion(
                 "Reference audio (voice clone / voice direction)", open=False
