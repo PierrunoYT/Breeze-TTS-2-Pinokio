@@ -155,14 +155,16 @@ first element carries the generated audio file path/URL.
 ### Upstream streaming API
 
 For low-latency streaming, the upstream FastAPI server is also available in the
-installed checkout. From `app/`, with the `env` venv active:
+installed checkout. From `app/`, with the `env` venv active (it loads its own
+copy of the model, so stop the web UI first if VRAM is tight; the port differs
+from Gradio's default 7860 so the two do not collide):
 
 ```bash
-python -m breeze_infer.api breeze-tts-2 --host 127.0.0.1 --port 7860
+python -m breeze_infer.api breeze-tts-2 --host 127.0.0.1 --port 8000
 ```
 
 ```bash
-curl -X POST http://127.0.0.1:7860/v1/audio/speech \
+curl -X POST http://127.0.0.1:8000/v1/audio/speech \
   -F "cfg_scale=4" \
   -F "ref_audio=@reference.wav" \
   -F "ref_text=This is the exact transcript of the reference audio." \
