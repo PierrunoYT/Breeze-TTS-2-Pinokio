@@ -32,15 +32,16 @@ module.exports = {
         "local-dir": "breeze-tts-2"
       }
     },
-    // Pick up any dependency changes
+    // Pick up any dependency changes. gradio resolves together with
+    // requirements.txt so it cannot drag huggingface-hub past the <1.0 that
+    // transformers==4.57.3 needs (this also repairs venvs broken that way).
     {
       method: "shell.run",
       params: {
         venv: "env",
         path: "app",
         message: [
-          "uv pip install -r requirements.txt",
-          "uv pip install gradio"
+          "uv pip install -r requirements.txt gradio"
         ]
       }
     },

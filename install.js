@@ -22,15 +22,17 @@ module.exports = {
         dest: "app/breeze_webui.py"
       }
     },
-    // Install the project dependencies plus gradio for the web UI
+    // Install the project dependencies plus gradio for the web UI in one
+    // resolve. A separate `uv pip install gradio` pulls the latest Gradio,
+    // whose huggingface-hub>=1.16 breaks the pinned transformers==4.57.3
+    // (huggingface-hub<1.0); resolving together picks a compatible Gradio.
     {
       method: "shell.run",
       params: {
         venv: "env",
         path: "app",
         message: [
-          "uv pip install -r requirements.txt",
-          "uv pip install gradio"
+          "uv pip install -r requirements.txt gradio"
         ]
       }
     },
